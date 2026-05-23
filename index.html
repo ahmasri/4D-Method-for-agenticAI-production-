@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>4D Method — AI Product Knowledge Base</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: #FAFAF8;
+    color: #1A1A1A;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: #0F172A;
+    color: #F8FAFC;
+    padding: 32px 24px 24px;
+    border-bottom: 4px solid #2563EB;
+  }
+  .header-inner { max-width: 860px; margin: 0 auto; }
+  .header-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #94A3B8;
+    margin-bottom: 8px;
+    font-family: monospace;
+  }
+  .header h1 { font-size: 26px; font-weight: 700; line-height: 1.2; }
+  .header-meta { margin-top: 10px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .header-badge {
+    background: #1E3A5F;
+    border: 1px solid #2563EB;
+    border-radius: 4px;
+    padding: 3px 10px;
+    font-size: 12px;
+    color: #93C5FD;
+    font-family: monospace;
+  }
+  .header-tagline { color: #64748B; font-size: 13px; }
+
+  /* TABS */
+  .tabs-bar {
+    background: #1E293B;
+    padding: 0 24px;
+    overflow-x: auto;
+  }
+  .tabs-inner { max-width: 860px; margin: 0 auto; display: flex; gap: 4px; }
+  .tab-btn {
+    background: transparent;
+    color: #94A3B8;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 14px 18px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Georgia', serif;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .tab-btn.active { color: #fff; font-weight: 700; }
+  .tab-btn:hover:not(.active) { color: #CBD5E1; }
+
+  /* CONTENT */
+  .content { max-width: 860px; margin: 0 auto; padding: 28px 24px 60px; }
+
+  /* PILLAR HEADER */
+  .pillar-header {
+    border-radius: 0 8px 8px 0;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+  .pillar-subtitle {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .pillar-principle {
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: #1E293B;
+    font-style: italic;
+  }
+
+  /* INSIGHT */
+  .insight-box {
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .insight-icon { font-size: 20px; }
+  .insight-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: #64748B; margin-bottom: 4px;
+  }
+  .insight-text { font-size: 14.5px; line-height: 1.65; color: #334155; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #64748B; margin-bottom: 12px;
+  }
+
+  /* FRAMEWORK ACCORDION */
+  .framework-block {
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .framework-btn {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 16px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    text-align: left;
+    gap: 12px;
+  }
+  .framework-name { font-size: 15px; font-weight: 700; color: #0F172A; margin-bottom: 4px; }
+  .framework-purpose { font-size: 13px; color: #64748B; line-height: 1.5; }
+  .framework-chevron { font-size: 18px; flex-shrink: 0; transition: transform 0.2s; margin-top: 2px; }
+  .framework-chevron.open { transform: rotate(180deg); }
+  .framework-body { border-top: 1px solid #F1F5F9; padding: 0 20px 20px; display: none; }
+  .framework-body.open { display: block; }
+  .step-row {
+    display: flex; gap: 14px; padding: 12px 0;
+    border-bottom: 1px solid #F1F5F9;
+    align-items: flex-start;
+  }
+  .step-row:last-child { border-bottom: none; }
+  .step-num {
+    color: #fff;
+    border-radius: 50%;
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .step-title { font-weight: 700; font-size: 13.5px; color: #1E293B; margin-bottom: 4px; }
+  .step-detail { font-size: 13px; color: #475569; line-height: 1.6; }
+
+  /* QUESTIONS */
+  .questions-box {
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .question-row {
+    display: flex; gap: 12px; padding: 9px 0;
+    border-bottom: 1px solid #F1F5F9;
+    align-items: flex-start;
+  }
+  .question-row:last-child { border-bottom: none; }
+  .question-arrow { font-weight: 700; font-size: 14px; flex-shrink: 0; }
+  .question-text { font-size: 13.5px; color: #334155; line-height: 1.6; }
+
+  /* CASE STUDY */
+  .case-study {
+    background: #0F172A; color: #F1F5F9;
+    border-radius: 8px; padding: 18px 22px;
+    margin-bottom: 16px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .case-icon { font-size: 22px; flex-shrink: 0; }
+  .case-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #94A3B8; margin-bottom: 5px;
+  }
+  .case-title { font-weight: 700; font-size: 14px; color: #E2E8F0; margin-bottom: 6px; }
+  .case-lesson { font-size: 13.5px; color: #CBD5E1; line-height: 1.65; }
+
+  /* NOTES TOGGLE */
+  .notes-toggle-btn {
+    border-radius: 6px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Georgia', serif;
+    letter-spacing: 0.03em;
+    margin-bottom: 12px;
+    transition: all 0.15s;
+  }
+  .notes-box {
+    border-radius: 8px;
+    padding: 18px 22px;
+    display: none;
+  }
+  .notes-box.open { display: block; }
+  .notes-label {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .note-row {
+    display: flex; gap: 12px; padding: 8px 0;
+    align-items: flex-start;
+  }
+  .note-star { font-weight: 900; font-size: 14px; flex-shrink: 0; }
+  .note-text { font-size: 13.5px; color: #1E293B; line-height: 1.65; }
+
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid #E2E8F0;
+    padding: 20px 24px;
+    background: #F8FAFC;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-source { font-family: monospace; font-size: 12px; color: #94A3B8; }
+  .footer-sig { text-align: right; }
+  .footer-name { font-size: 14px; font-weight: 700; color: #0F172A; font-family: 'Georgia', serif; }
+  .footer-role { font-size: 12px; color: #64748B; font-family: monospace; letter-spacing: 0.05em; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-eyebrow">Project Management Consulting · Knowledge Base</div>
+    <h1>The 4D Method for Building AI Products</h1>
+    <div class="header-meta">
+      <span class="header-badge">Source: OpenAI Product Lead (Miqdad Jaffer) via productmanagement.ai</span>
+      <span class="header-tagline">Discovery · Design · Develop · Deploy</span>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-bar">
+  <div class="tabs-inner">
+    <button class="tab-btn active" onclick="switchTab('discovery')" id="tab-discovery" style="border-bottom-color:#2563EB; color:#fff;">🔍 1. Discovery</button>
+    <button class="tab-btn" onclick="switchTab('design')" id="tab-design">🏗️ 2. Design</button>
+    <button class="tab-btn" onclick="switchTab('develop')" id="tab-develop">⚙️ 3. Develop</button>
+    <button class="tab-btn" onclick="switchTab('deploy')" id="tab-deploy">🚀 4. Deploy</button>
+  </div>
+</div>
+
+<!-- PANELS -->
+<div id="panel-discovery" class="content">
+  <div class="pillar-header" style="background:#DBEAFE; border-left:5px solid #2563EB;">
+    <div class="pillar-subtitle" style="color:#2563EB;">Truth Hunting, Not Just Market Fit</div>
+    <p class="pillar-principle">AI discovery is not a single snapshot moment. You must continuously hunt for problems that will persist even as foundation models evolve and competitors converge on the same APIs.</p>
+  </div>
+  <div class="insight-box">
+    <span class="insight-icon">💡</span>
+    <div>
+      <div class="insight-label">Key Insight</div>
+      <p class="insight-text">The surface problem users describe today may vanish tomorrow when foundation models expand capabilities. Your product might ship just as the problem space disappears.</p>
+    </div>
+  </div>
+
+  <div class="section-label">Frameworks & Tools</div>
+
+  <div class="framework-block">
+    <button class="framework-btn" onclick="toggleFW(this)">
+      <div><div class="framework-name">Discovery Debt Log</div><div class="framework-purpose">Surface, document, and revisit every risky assumption underlying your strategy.</div></div>
+      <span class="framework-chevron" style="color:#2563EB;">▾</span>
+    </button>
+    <div class="framework-body">
+      <div class="step-row"><div class="step-num" style="background:#2563EB;">1</div><div><div class="step-title">Hypothesis Capture</div><div class="step-detail">Write the exact claim you're betting on. E.g. "Legal teams will pay $200/seat for AI contract review."</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#2563EB;">2</div><div><div class="step-title">Evidence Strength Rating</div><div class="step-detail">Anecdotal interview = weak · Pilot with paying users = medium · Ongoing retention data = strong</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#2563EB;">3</div><div><div class="step-title">Validation Method</div><div class="step-detail">Interviews, shadowing, surveys, usage logs, or revenue data?</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#2563EB;">4</div><div><div class="step-title">Risk If Wrong</div><div class="step-detail">Wasted a week (low) vs. startup dies (existential)</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#2563EB;">5</div><div><div class="step-title">Owner Assignment</div><div class="step-detail">Assign a named person to periodically re-validate this assumption.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#2563EB;">6</div><div><div class="step-title">Recheck Date</div><div class="step-detail">All assumptions decay. Set a hard date for re-interrogation.</div></div></div>
+    </div>
+  </div>
+
+  <div class="framework-block">
+    <button class="framework-btn" onclick="toggleFW(this)">
+      <div><div class="framework-name">3-Lens Discovery Test</div><div class="framework-purpose">Score any candidate problem across three dimensions. If avg &lt; 3.5/5, don't bet the company on it.</div></div>
+      <span class="framework-chevron" style="color:#2563EB;">▾</span>
+    </button>
+    <div class="framework-body">
+      <div class="step-row"><div class="step-num" style="background:#2563EB;">1</div><div><div class="step-title">Durability Lens (1–5)</div><div class="step-detail">Will this problem exist after the next 2–3 foundation model upgrades? Outputs (summaries, captions) are fragile. Workflows, integrations, and compliance contexts are durable.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#2563EB;">2</div><div><div class="step-title">Data Lens (1–5)</div><div class="step-detail">Can you secure exclusive or defensible data pipelines over time? Not scraped web data — proprietary interaction loops like Duolingo's learner corrections.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#2563EB;">3</div><div><div class="step-title">Trust Lens (1–5)</div><div class="step-detail">Who controls the veto on trust? Regulator, compliance officer, CFO? Discovery that ignores the veto holder is doomed.</div></div></div>
+    </div>
+  </div>
+
+  <div class="questions-box">
+    <div class="section-label">Diagnostic Questions</div>
+    <div class="question-row"><span class="question-arrow" style="color:#2563EB;">→</span><span class="question-text">What if the problem disappears in 12 months due to model commoditization?</span></div>
+    <div class="question-row"><span class="question-arrow" style="color:#2563EB;">→</span><span class="question-text">Who actually owns the data, and could they revoke access?</span></div>
+    <div class="question-row"><span class="question-arrow" style="color:#2563EB;">→</span><span class="question-text">Would regulators or risk officers be embarrassed if our product failed publicly?</span></div>
+    <div class="question-row"><span class="question-arrow" style="color:#2563EB;">→</span><span class="question-text">Can a competitor replicate this with the same API in under six weeks?</span></div>
+    <div class="question-row"><span class="question-arrow" style="color:#2563EB;">→</span><span class="question-text">If we succeed at scale, what is the first way trust breaks?</span></div>
+  </div>
+
+  <div class="case-study">
+    <span class="case-icon">📌</span>
+    <div>
+      <div class="case-label">Case Study</div>
+      <div class="case-title">Babylon Health (Failure Example)</div>
+      <div class="case-lesson">Assumed regulators would treat their AI doctor as equivalent to a human GP. Never revisited the assumption until it was too late.</div>
+    </div>
+  </div>
+
+  <button class="notes-toggle-btn" style="background:transparent; color:#2563EB; border:2px solid #2563EB;" onclick="toggleNotes(this, '#DBEAFE', '#2563EB')">▸ Show Consulting Application Notes</button>
+  <div class="notes-box" style="background:#DBEAFE; border:1px solid #2563EB;">
+    <div class="notes-label" style="color:#2563EB;">How to apply in client engagements</div>
+    <div class="note-row"><span class="note-star" style="color:#2563EB;">✦</span><span class="note-text">Run a Discovery Debt Log audit in workshops — most enterprise clients have zero formal assumption tracking.</span></div>
+    <div class="note-row"><span class="note-star" style="color:#2563EB;">✦</span><span class="note-text">Use the 3-Lens scoring to pressure-test client AI roadmaps before committing to build.</span></div>
+    <div class="note-row"><span class="note-star" style="color:#2563EB;">✦</span><span class="note-text">Grammar-fixing SaaS (2020) → commoditized by GPT-4 by 2023: use as a vivid client illustration.</span></div>
+  </div>
+</div>
+
+<!-- DESIGN PANEL -->
+<div id="panel-design" class="content" style="display:none;">
+  <div class="pillar-header" style="background:#EDE9FE; border-left:5px solid #7C3AED;">
+    <div class="pillar-subtitle" style="color:#7C3AED;">System Architecture for Trust</div>
+    <p class="pillar-principle">AI design is not UX. It is the architecture of how the system behaves under stress, drift, and abuse. The job is to engineer for trust — not aesthetics.</p>
+  </div>
+  <div class="insight-box">
+    <span class="insight-icon">💡</span>
+    <div>
+      <div class="insight-label">Key Insight</div>
+      <p class="insight-text">A beautiful interface cannot save a product that produces unsafe outputs, consumes tokens unpredictably, or sets false expectations about reliability.</p>
+    </div>
+  </div>
+
+  <div class="section-label">Frameworks & Tools</div>
+
+  <div class="framework-block">
+    <button class="framework-btn" onclick="toggleFW(this)">
+      <div><div class="framework-name">FTCEM Failure Mode Framework</div><div class="framework-purpose">Pre-define every catastrophic failure before launch, not after.</div></div>
+      <span class="framework-chevron" style="color:#7C3AED;">▾</span>
+    </button>
+    <div class="framework-body">
+      <div class="step-row"><div class="step-num" style="background:#7C3AED;">1</div><div><div class="step-title">Failure Mode</div><div class="step-detail">Identify specific catastrophic failures: hallucinating legal advice, running a million API calls unexpectedly, producing harmful outputs.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#7C3AED;">2</div><div><div class="step-title">Trigger</div><div class="step-detail">What causes this failure? Malicious prompts, ambiguous instructions, dataset bias.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#7C3AED;">3</div><div><div class="step-title">Consequence</div><div class="step-detail">Downstream damage: loss of user trust, legal liability, infrastructure collapse.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#7C3AED;">4</div><div><div class="step-title">Early Warning Signal</div><div class="step-detail">Telemetry or UX signal that alerts you: spike in out-of-distribution inputs, rising support tickets.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#7C3AED;">5</div><div><div class="step-title">Mitigation</div><div class="step-detail">Pre-define response: graceful shutdown, human review escalation, functionality degradation.</div></div></div>
+    </div>
+  </div>
+
+  <div class="framework-block">
+    <button class="framework-btn" onclick="toggleFW(this)">
+      <div><div class="framework-name">3-Layer AI Design Pyramid</div><div class="framework-purpose">Design across three nested layers — not just the visible one.</div></div>
+      <span class="framework-chevron" style="color:#7C3AED;">▾</span>
+    </button>
+    <div class="framework-body">
+      <div class="step-row"><div class="step-num" style="background:#7C3AED;">1</div><div><div class="step-title">Layer 1 — Interaction Design (Visible)</div><div class="step-detail">Prompts, responses, chat interfaces, explanations. Word choice sets expectations: "generate" implies creativity, "recommend" implies authority, "summarize" implies neutrality. Test 50–100 verb variations.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#7C3AED;">2</div><div><div class="step-title">Layer 2 — Constraint Design (Invisible)</div><div class="step-detail">Filters, monitoring, escalation paths, rule-based guardrails. Decide: fail silently, block output, or escalate to human? Microsoft Tay had zero constraints — toxic in 24 hours.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#7C3AED;">3</div><div><div class="step-title">Layer 3 — Expectation Design (Meta)</div><div class="step-detail">Pricing, onboarding copy, and marketing all set expectations before users touch the product. "AI doctor" implies infallibility. "Symptom checker" tolerates uncertainty.</div></div></div>
+    </div>
+  </div>
+
+  <div class="questions-box">
+    <div class="section-label">Diagnostic Questions</div>
+    <div class="question-row"><span class="question-arrow" style="color:#7C3AED;">→</span><span class="question-text">"Imagine our product fails in the New York Times tomorrow — what is the headline?" Then backtrack into failure modes.</span></div>
+    <div class="question-row"><span class="question-arrow" style="color:#7C3AED;">→</span><span class="question-text">Do we fail silently, block, or escalate when hitting edge cases?</span></div>
+    <div class="question-row"><span class="question-arrow" style="color:#7C3AED;">→</span><span class="question-text">Are our constraints baked into training (Anthropic's approach) or patched on post-launch?</span></div>
+  </div>
+
+  <div class="case-study">
+    <span class="case-icon">📌</span>
+    <div>
+      <div class="case-label">Case Study</div>
+      <div class="case-title">Anthropic Constitutional AI (Success Example)</div>
+      <div class="case-lesson">Embedded alignment principles into model training itself — constraint design at the deepest level, not a post-hoc content filter.</div>
+    </div>
+  </div>
+
+  <button class="notes-toggle-btn" style="background:transparent; color:#7C3AED; border:2px solid #7C3AED;" onclick="toggleNotes(this, '#EDE9FE', '#7C3AED')">▸ Show Consulting Application Notes</button>
+  <div class="notes-box" style="background:#EDE9FE; border:1px solid #7C3AED;">
+    <div class="notes-label" style="color:#7C3AED;">How to apply in client engagements</div>
+    <div class="note-row"><span class="note-star" style="color:#7C3AED;">✦</span><span class="note-text">Run a cross-functional FTCEM workshop: product, design, engineering, AND legal/compliance in the same room.</span></div>
+    <div class="note-row"><span class="note-star" style="color:#7C3AED;">✦</span><span class="note-text">Challenge clients: which layer of the pyramid do they actually design for? Most only do Layer 1.</span></div>
+    <div class="note-row"><span class="note-star" style="color:#7C3AED;">✦</span><span class="note-text">The "NYT front page failure" question is a powerful executive facilitation tool.</span></div>
+  </div>
+</div>
+
+<!-- DEVELOP PANEL -->
+<div id="panel-develop" class="content" style="display:none;">
+  <div class="pillar-header" style="background:#D1FAE5; border-left:5px solid #059669;">
+    <div class="pillar-subtitle" style="color:#059669;">Engineering for Drift, Not Just Features</div>
+    <p class="pillar-principle">In AI, there is no finish line. The environment constantly shifts: inputs change, foundation models evolve, costs fluctuate, and user behavior stretches systems into unexpected territories.</p>
+  </div>
+  <div class="insight-box">
+    <span class="insight-icon">💡</span>
+    <div>
+      <div class="insight-label">Key Insight</div>
+      <p class="insight-text">You are not shipping features. You are engineering resilience against drift — the slow, invisible slide of a product away from its intended reliability.</p>
+    </div>
+  </div>
+
+  <div class="section-label">Frameworks & Tools</div>
+
+  <div class="framework-block">
+    <button class="framework-btn" onclick="toggleFW(this)">
+      <div><div class="framework-name">Drift Management Loop</div><div class="framework-purpose">Formalize continuous monitoring of the three types of drift every sprint.</div></div>
+      <span class="framework-chevron" style="color:#059669;">▾</span>
+    </button>
+    <div class="framework-body">
+      <div class="step-row"><div class="step-num" style="background:#059669;">1</div><div><div class="step-title">Model Drift</div><div class="step-detail">Input distribution shifts away from training data → less reliable results. Manage with: golden dataset regression tests, out-of-distribution alerts, periodic domain expert re-labeling.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#059669;">2</div><div><div class="step-title">Cost Drift</div><div class="step-detail">Infra costs that seemed efficient at 100K queries become unsustainable at 10M. Manage with: cost-per-successful-outcome tracking (not cost-per-API-call), per-user cost thresholds, prompt/caching optimization.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#059669;">3</div><div><div class="step-title">Behavior Drift</div><div class="step-detail">AI subtly shifts tone or style — trust erodes invisibly. Manage with: UX regression testing (same input, monthly), user trust signal collection (NPS, support tickets), escalation paths for flagged behaviors.</div></div></div>
+    </div>
+  </div>
+
+  <div class="framework-block">
+    <button class="framework-btn" onclick="toggleFW(this)">
+      <div><div class="framework-name">The Drift Triangle</div><div class="framework-purpose">Balance three competing forces — optimizing one stresses the others.</div></div>
+      <span class="framework-chevron" style="color:#059669;">▾</span>
+    </button>
+    <div class="framework-body">
+      <div class="step-row"><div class="step-num" style="background:#059669;">1</div><div><div class="step-title">Performance ↔ Cost</div><div class="step-detail">Longer context windows raise accuracy but cost dramatically more.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#059669;">2</div><div><div class="step-title">Cost ↔ Trust</div><div class="step-detail">Compressing prompts to cut cost can make outputs unreliable, eroding trust.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#059669;">3</div><div><div class="step-title">Trust ↔ Performance</div><div class="step-detail">Adding human review loops improves trust but slows performance at scale.</div></div></div>
+    </div>
+  </div>
+
+  <div class="framework-block">
+    <button class="framework-btn" onclick="toggleFW(this)">
+      <div><div class="framework-name">Drift Playbook</div><div class="framework-purpose">Operationalize drift management into team rhythms.</div></div>
+      <span class="framework-chevron" style="color:#059669;">▾</span>
+    </button>
+    <div class="framework-body">
+      <div class="step-row"><div class="step-num" style="background:#059669;">1</div><div><div class="step-title">Create a Golden Dataset</div><div class="step-detail">200–500 examples representing mission-critical inputs. Run regression tests with every model update.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#059669;">2</div><div><div class="step-title">Set Cost Thresholds</div><div class="step-detail">Maximum acceptable cost per user or per successful outcome — defined before launch.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#059669;">3</div><div><div class="step-title">Design Behavior Monitors</div><div class="step-detail">Track tone, consistency, and alignment via regular audits.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#059669;">4</div><div><div class="step-title">Run Drift Reviews</div><div class="step-detail">End every sprint with drift metrics alongside velocity metrics — not just feature completion.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#059669;">5</div><div><div class="step-title">Document Drift Events</div><div class="step-detail">Maintain a drift log (like an incident log) to accumulate compounding lessons.</div></div></div>
+    </div>
+  </div>
+
+  <div class="questions-box">
+    <div class="section-label">Diagnostic Questions</div>
+    <div class="question-row"><span class="question-arrow" style="color:#059669;">→</span><span class="question-text">What is our golden dataset, and when did we last run regression tests against it?</span></div>
+    <div class="question-row"><span class="question-arrow" style="color:#059669;">→</span><span class="question-text">Are we tracking cost per successful outcome or just cost per API call?</span></div>
+    <div class="question-row"><span class="question-arrow" style="color:#059669;">→</span><span class="question-text">When did we last run the same test input against our model to check behavior stability?</span></div>
+  </div>
+
+  <div class="case-study">
+    <span class="case-icon">📌</span>
+    <div>
+      <div class="case-label">Case Study</div>
+      <div class="case-title">Tesla Shadow Mode & Perplexity Eval Pipelines</div>
+      <div class="case-lesson">Tesla deploys features in "shadow mode" — running silently before exposing to users. Perplexity benchmarks every model release against golden Q&A datasets. Both see drift before users do.</div>
+    </div>
+  </div>
+
+  <button class="notes-toggle-btn" style="background:transparent; color:#059669; border:2px solid #059669;" onclick="toggleNotes(this, '#D1FAE5', '#059669')">▸ Show Consulting Application Notes</button>
+  <div class="notes-box" style="background:#D1FAE5; border:1px solid #059669;">
+    <div class="notes-label" style="color:#059669;">How to apply in client engagements</div>
+    <div class="note-row"><span class="note-star" style="color:#059669;">✦</span><span class="note-text">Most enterprise AI teams have no formal drift review cadence — this is a high-impact consulting gap.</span></div>
+    <div class="note-row"><span class="note-star" style="color:#059669;">✦</span><span class="note-text">Shadow mode deployment is immediately applicable to any AI feature in regulated industries (telecom, finance, healthcare).</span></div>
+    <div class="note-row"><span class="note-star" style="color:#059669;">✦</span><span class="note-text">Cost drift is the silent killer of AI startup economics — frame it clearly for CFO-level clients.</span></div>
+  </div>
+</div>
+
+<!-- DEPLOY PANEL -->
+<div id="panel-deploy" class="content" style="display:none;">
+  <div class="pillar-header" style="background:#FEE2E2; border-left:5px solid #DC2626;">
+    <div class="pillar-subtitle" style="color:#DC2626;">Defending the Moat, Not Just Launching</div>
+    <p class="pillar-principle">Deployment is not the party after building. It is the beginning of the survival test — the war for defensibility against competitors who have access to the same models and APIs.</p>
+  </div>
+  <div class="insight-box">
+    <span class="insight-icon">💡</span>
+    <div>
+      <div class="insight-label">Key Insight</div>
+      <p class="insight-text">The day after you launch, competitors will replicate your idea, regulators will scrutinize your outputs, and users will push the system into edge cases you never predicted.</p>
+    </div>
+  </div>
+
+  <div class="section-label">Frameworks & Tools</div>
+
+  <div class="framework-block">
+    <button class="framework-btn" onclick="toggleFW(this)">
+      <div><div class="framework-name">Day 2 Checklist</div><div class="framework-purpose">The six operational requirements that must be live on Day 2 — not bolted on later.</div></div>
+      <span class="framework-chevron" style="color:#DC2626;">▾</span>
+    </button>
+    <div class="framework-body">
+      <div class="step-row"><div class="step-num" style="background:#DC2626;">1</div><div><div class="step-title">Monitoring Dashboards Live</div><div class="step-detail">Usage, drift, costs, and error rates tracked in real time. No monitoring = flying blind.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#DC2626;">2</div><div><div class="step-title">Compliance Reporting Automated</div><div class="step-detail">For regulated industries, reporting pipelines live from Day 2, not six months later.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#DC2626;">3</div><div><div class="step-title">Retraining Cadence Defined</div><div class="step-detail">Weekly or monthly schedule for retraining/updating models — don't wait for trust to collapse.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#DC2626;">4</div><div><div class="step-title">Feedback Routing Active</div><div class="step-detail">Every ticket, complaint, or flagged output captured and routed back into the evaluation dataset.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#DC2626;">5</div><div><div class="step-title">Billing & Infra Alerts Live</div><div class="step-detail">Alerts for runaway costs or token spikes. Many AI startups fail from infra bills, not churn.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#DC2626;">6</div><div><div class="step-title">Rollback Protocols Rehearsed</div><div class="step-detail">Team must be able to roll back to a safe state within hours of a catastrophic bug.</div></div></div>
+    </div>
+  </div>
+
+  <div class="framework-block">
+    <button class="framework-btn" onclick="toggleFW(this)">
+      <div><div class="framework-name">Three Moats of Deployment</div><div class="framework-purpose">Build defensibility that competitors cannot easily copy.</div></div>
+      <span class="framework-chevron" style="color:#DC2626;">▾</span>
+    </button>
+    <div class="framework-body">
+      <div class="step-row"><div class="step-num" style="background:#DC2626;">1</div><div><div class="step-title">Distribution Moat</div><div class="step-detail">Where you launch matters more than what you launch. Embed into existing workflows (Slack, Figma, CRMs) rather than building standalone apps. Runway embedded into creative workflows for staying power.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#DC2626;">2</div><div><div class="step-title">Trust Moat</div><div class="step-detail">Users forgive early mistakes if they trust your process. Safeguards, transparent explanations, and human escalation paths create a moat competitors can't copy. Zoom's moat = reliability perception, not video quality.</div></div></div>
+      <div class="step-row"><div class="step-num" style="background:#DC2626;">3</div><div><div class="step-title">Adaptation Moat</div><div class="step-detail">The only certainty in AI is change. Companies that retrain, iterate, and ship faster survive. Stripe's ability to continuously adapt created a moat bigger than payments.</div></div></div>
+    </div>
+  </div>
+
+  <div class="questions-box">
+    <div class="section-label">Diagnostic Questions</div>
+    <div class="question-row"><span class="question-arrow" style="color:#DC2626;">→</span><span class="question-text">If X breaks on Day 2, what exactly happens — and can we answer that for every major component?</span></div>
+    <div class="question-row"><span class="question-arrow" style="color:#DC2626;">→</span><span class="question-text">Are we building a standalone app (fragile) or embedding into an existing workflow (defensible)?</span></div>
+    <div class="question-row"><span class="question-arrow" style="color:#DC2626;">→</span><span class="question-text">Can our team roll back to a safe state within 2 hours of a production failure?</span></div>
+  </div>
+
+  <div class="case-study">
+    <span class="case-icon">📌</span>
+    <div>
+      <div class="case-label">Case Study</div>
+      <div class="case-title">Zoom vs. Clubhouse</div>
+      <div class="case-lesson">Zoom mastered deployment moats: reliability, global distribution, enterprise trust. Clubhouse had viral launch buzz but no Day 2 plan — no trust moat, no adaptation speed, no distribution moat. It fizzled as fast as it rose.</div>
+    </div>
+  </div>
+
+  <button class="notes-toggle-btn" style="background:transparent; color:#DC2626; border:2px solid #DC2626;" onclick="toggleNotes(this, '#FEE2E2', '#DC2626')">▸ Show Consulting Application Notes</button>
+  <div class="notes-box" style="background:#FEE2E2; border:1px solid #DC2626;">
+    <div class="notes-label" style="color:#DC2626;">How to apply in client engagements</div>
+    <div class="note-row"><span class="note-star" style="color:#DC2626;">✦</span><span class="note-text">The Day 2 Checklist is a direct diagnostic tool for enterprise AI readiness assessments.</span></div>
+    <div class="note-row"><span class="note-star" style="color:#DC2626;">✦</span><span class="note-text">Ask clients: "Which of the three moats are you actually building?" Most are building none.</span></div>
+    <div class="note-row"><span class="note-star" style="color:#DC2626;">✦</span><span class="note-text">Distribution moat is the most underrated — challenge clients to name which workflow they are embedding into.</span></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-source">Extracted from: productmanagement.ai · Miqdad Jaffer, Product Lead @ OpenAI · For consulting use only</div>
+  <div class="footer-sig">
+    <div class="footer-name">Dr. Ahmad Masri</div>
+    <div class="footer-role">Enterprise AI Workflows Enablement</div>
+  </div>
+</div>
+
+<script>
+  const COLORS = {
+    discovery: '#2563EB',
+    design: '#7C3AED',
+    develop: '#059669',
+    deploy: '#DC2626'
+  };
+
+  function switchTab(id) {
+    ['discovery','design','develop','deploy'].forEach(p => {
+      document.getElementById('panel-' + p).style.display = p === id ? 'block' : 'none';
+      const btn = document.getElementById('tab-' + p);
+      if (p === id) {
+        btn.classList.add('active');
+        btn.style.borderBottomColor = COLORS[p];
+        btn.style.color = '#fff';
+        btn.style.fontWeight = '700';
+      } else {
+        btn.classList.remove('active');
+        btn.style.borderBottomColor = 'transparent';
+        btn.style.color = '#94A3B8';
+        btn.style.fontWeight = '400';
+      }
+    });
+  }
+
+  function toggleFW(btn) {
+    const body = btn.nextElementSibling;
+    const chevron = btn.querySelector('.framework-chevron');
+    const isOpen = body.classList.contains('open');
+    // Close all in same panel
+    btn.closest('.content').querySelectorAll('.framework-body').forEach(b => b.classList.remove('open'));
+    btn.closest('.content').querySelectorAll('.framework-chevron').forEach(c => c.classList.remove('open'));
+    if (!isOpen) {
+      body.classList.add('open');
+      chevron.classList.add('open');
+    }
+  }
+
+  function toggleNotes(btn, bg, color) {
+    const box = btn.nextElementSibling;
+    const isOpen = box.classList.contains('open');
+    box.classList.toggle('open');
+    if (!isOpen) {
+      btn.style.background = color;
+      btn.style.color = '#fff';
+      btn.textContent = '▾ Hide Consulting Application Notes';
+    } else {
+      btn.style.background = 'transparent';
+      btn.style.color = color;
+      btn.textContent = '▸ Show Consulting Application Notes';
+    }
+  }
+</script>
+</body>
+</html>
